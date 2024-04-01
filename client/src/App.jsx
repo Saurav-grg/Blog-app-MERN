@@ -14,17 +14,19 @@ import CategoryAll from './pages/CategoryAll';
 import { useBlogsContext } from './hooks/useBlogsContext';
 import PrivateRoute from './PrivateRoute';
 import Errorpage from './pages/Errorpage';
+import { useAuthContext } from './hooks/useAuthContext';
 
 function App() {
   const { dispatch } = useBlogsContext();
-  const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { dispatch: authDispatch, user } = useAuthContext();
+
+  // const [user, setUser] = useState(null);
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
 
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
-      setIsLoading(false);
+      authDispatch({ type: 'LOGIN', payload: JSON.parse(storedUser) });
+      // setUser(JSON.parse(storedUser));
     } else {
       const getUser = async () => {
         try {
@@ -36,9 +38,10 @@ function App() {
             photos: photos[0].value,
             role,
           };
+          authDispatch({ type: 'LOGIN', payload: userData });
           // console.log(userData);
-          setUser(userData);
-          setIsLoading(false);
+          // setUser(userData);
+
           localStorage.setItem('user', JSON.stringify(userData)); // Store for future use
         } catch (error) {
           console.log(error);
@@ -58,17 +61,18 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Navbar user={user} />
+      <Navbar />
+
       <div className="max-w-[1400px] min-h-screen mx-auto my-0">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/sign-in" element={<Signin />} />
-          {isLoading ? null : (
-            <Route path="/private/*" element={<PrivateRoute user={user} />}>
-              <Route path="create-blog" element={<CreateBlog />} />
-              <Route path="dashboard" element={<Dashboard />} />
-            </Route>
-          )}
+
+          <Route path="/private/*" element={<PrivateRoute />}>
+            <Route path="create-blog" element={<CreateBlog />} />
+            <Route path="dashboard" element={<Dashboard />} />
+          </Route>
+
           <Route path="/:category/:slug" element={<FullBlog />} />
           <Route path="/:category" element={<CategoryAll />} />
           <Route path="*" element={<Errorpage />} />

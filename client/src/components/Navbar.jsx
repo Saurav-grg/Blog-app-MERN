@@ -1,7 +1,9 @@
 import { Link, NavLink } from 'react-router-dom';
 import { useState } from 'react';
+import { useAuthContext } from '../hooks/useAuthContext';
 
-function Navbar({ user }) {
+function Navbar() {
+  const { user } = useAuthContext();
   const pages = [
     { name: 'Home', path: '/' },
     { name: 'Economics', path: '/economics' },

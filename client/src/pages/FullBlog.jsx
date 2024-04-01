@@ -6,8 +6,10 @@ import 'react-quill/dist/quill.bubble.css'; // import the styles
 import Recommended from '../components/Recommended';
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 export default function FullBlog() {
+  const { user } = useAuthContext();
   const [blog, setBlog] = useState();
   const [recommend, setRecommend] = useState();
   const { category, slug } = useParams();
@@ -60,6 +62,15 @@ export default function FullBlog() {
                   </div>
                   {/* <span className="font-semibold">By Saurav Gurung</span> */}
                 </div>
+                {user ? (
+                  <div>
+                    <button>edit</button>
+                    <button>delete</button>
+                  </div>
+                ) : (
+                  ''
+                )}
+
                 <button>
                   <FaShareSquare className=" xsm:size-6 text-red-400" />
                 </button>
