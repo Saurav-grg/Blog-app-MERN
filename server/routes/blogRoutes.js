@@ -6,6 +6,7 @@ const {
   getBlog,
   getALlBlogs,
   getByCategory,
+  deleteBlog,
 } = require('../controller/blogControl');
 
 const multer = require('multer');
@@ -37,6 +38,7 @@ router.get('/:category/:slug', getBlog);
 // router.post('/like', createLike)
 
 //developer routes
+router.delete('/delete-blog/:id', isDeveloper, deleteBlog);
 router.post('/create-blog', upload.single('image'), isDeveloper, createBlog);
 
 module.exports = router;

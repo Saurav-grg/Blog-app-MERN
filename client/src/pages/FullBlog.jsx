@@ -4,11 +4,17 @@ import { formatDistanceToNow } from 'date-fns/formatDistanceToNow';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.bubble.css'; // import the styles
 import Recommended from '../components/Recommended';
+import axios from 'axios';
+
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
 import { useAuthContext } from '../hooks/useAuthContext';
+import { FaEdit } from 'react-icons/fa';
+import { MdDeleteForever } from 'react-icons/md';
+import { useBlogsContext } from '../hooks/useBlogsContext';
 
 export default function FullBlog() {
+  const { dispatch } = useBlogsContext();
   const { user } = useAuthContext();
   const [blog, setBlog] = useState();
   const [recommend, setRecommend] = useState();
@@ -32,6 +38,23 @@ export default function FullBlog() {
     };
     fetchBlog();
   }, [slug, category]);
+
+  const handleDelete = async () => {
+    const url = `http://localhost:5000/api/blogs/delete-blog/${blog._id}`;
+    try {
+      const response = await axios.delete(url, { withCredentials: true });
+      if (response.status === 200) {
+        // Assuming the response contains JSON data
+        const data = await response.data;
+        dispatch({ type: 'DELETE_BLOG', payload: data });
+        console.log('Deleted successfully');
+      } else {
+        console.log(`Error: ${response.status} - ${response.statusText}`);
+      }
+    } catch (error) {
+      console.error('An error occurred:', error.message);
+    }
+  };
   // console.log(blog);
 
   // if (!blog) {
@@ -62,56 +85,29 @@ export default function FullBlog() {
                   </div>
                   {/* <span className="font-semibold">By Saurav Gurung</span> */}
                 </div>
-                {user ? (
-                  <div>
-                    <button>edit</button>
-                    <button>delete</button>
-                  </div>
-                ) : (
-                  ''
-                )}
-
-                <button>
-                  <FaShareSquare className=" xsm:size-6 text-red-400" />
-                </button>
+                <div className="flex justify-between gap-4">
+                  {user ? (
+                    <>
+                      <button>
+                        <FaEdit className=" xsm:size-6 text-green-400" />
+                      </button>
+                      <button onClick={handleDelete}>
+                        <MdDeleteForever className=" xsm:size-6 text-red-700" />
+                      </button>
+                    </>
+                  ) : (
+                    ''
+                  )}
+                  <button>
+                    <FaShareSquare className=" xsm:size-6 text-blue-700" />
+                  </button>
+                </div>
               </div>
               <img
                 src={`http://localhost:5000/${blog.img}`}
                 alt="image"
                 className="max-h-[400px] w-[850px] object-cover rounded"
               />
-
-              {/* <div
-              style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}
-              className="p-4 rounded-lg flex flex-col gap-4 shadow-lg absolute bottom-[-60px] left-1/4 right-1/4  "
-            >
-              <div className="text-3xl font-bold text-blue-900 font-sans">
-                {blog.title} in this obsecure time and economy of this
-              </div>
-              <div className="text-gray-500 font-semibold">
-                Category : {blog.category}
-              </div>
-              <div className="flex justify-between">
-                <div className="flex gap-1">
-                  <img
-                    src="/profile.jpg"
-                    alt="profile image"
-                    className="rounded-full w-12 h-12 object-cover"
-                  />
-                  <div className="flex flex-col">
-                    <span className="font-semibold">By Saurav Gurung</span>
-                    <span className="text-gray-700">
-                      {formatDistanceToNow(new Date(blog.createdAt), {
-                        addSuffix: true,
-                      })}
-                    </span>
-                  </div>
-                </div>
-                <button>
-                  <FaShareSquare className=" size-6 text-red-400" />
-                </button>
-              </div>
-            </div> */}
             </div>
 
             <div className="md:max-w-[850px] mt-10 ">

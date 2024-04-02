@@ -1,5 +1,6 @@
 const Blog = require('../models/blogModel');
 const slugify = require('slugify');
+const mongoose = require('mongoose');
 
 //create new blog
 const createBlog = async (req, res) => {
@@ -68,7 +69,7 @@ const getALlBlogs = async (req, res) => {
     res.status(500).send({ error: error.message });
   }
 };
-//
+//get by category
 const getByCategory = async (req, res) => {
   try {
     const { category } = req.params;
@@ -84,4 +85,27 @@ const getByCategory = async (req, res) => {
     res.status(500).send({ error: error.message });
   }
 };
-module.exports = { createBlog, getBlog, getALlBlogs, getByCategory };
+//delete a blog
+const deleteBlog = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ error: 'data not found' });
+    }
+
+    const blog = await Blog.findOneAndDelete({ _id: id });
+    if (!blog) {
+      return res.status(404).json({ error: 'data not found' });
+    }
+    res.status(200).json(blog);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+module.exports = {
+  createBlog,
+  getBlog,
+  getALlBlogs,
+  getByCategory,
+  deleteBlog,
+};

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Recommended(props) {
-  console.log(props.relatedBlogs);
+  // console.log(props.relatedBlogs);
   const recommend = props.relatedBlogs;
   return (
     <>
