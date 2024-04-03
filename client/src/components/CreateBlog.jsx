@@ -4,6 +4,8 @@ import { FileInput, Select, TextInput, Button } from 'flowbite-react';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import useCreatePost from '../hooks/useCreatePost';
+import useUpdatePost from '../hooks/useUpdatePost';
+import { useLocation } from 'react-router-dom';
 // import CustomFontSize from '../QuillCustomize/CustomFontSize';
 
 export default function CreateBlog() {
@@ -34,14 +36,14 @@ export default function CreateBlog() {
     ],
   };
 
-  const [img, setImg] = useState(null);
+  const state = useLocation().state;
   //form data
-
-  const [title, setTitle] = useState('');
-  const [category, setCategory] = useState('uncategorized');
-  const [content, setContent] = useState('');
-  const [description, setDescription] = useState('');
-  const [keywords, setKeywords] = useState('');
+  const [img, setImg] = useState(null);
+  const [title, setTitle] = useState(state?.title || '');
+  const [category, setCategory] = useState(state?.category || 'uncategorized');
+  const [content, setContent] = useState(state?.content || '');
+  const [description, setDescription] = useState(state?.description || '');
+  const [keywords, setKeywords] = useState(state?.keywords || '');
   //handle file
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -49,7 +51,12 @@ export default function CreateBlog() {
   };
 
   const { error, isLoading, createPost, successMsg } = useCreatePost();
-
+  const {
+    error: updateError,
+    isLoading: updateLoading,
+    updatePost,
+    successMsg: updateSuccessMsg,
+  } = useUpdatePost();
   //submit function
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -65,12 +72,16 @@ export default function CreateBlog() {
     formData.append('content', content);
     formData.append('meta', metaDataString);
 
-    await createPost(formData);
+    if (state) {
+      await updatePost(state._id, formData); // Replace updatePost with your actual function for updating a post
+    } else {
+      await createPost(formData);
+    }
   };
   const [showMsg, setShowMsg] = useState(true);
 
   useEffect(() => {
-    if (successMsg) {
+    if (successMsg || updateSuccessMsg) {
       const timer = setTimeout(() => {
         setShowMsg(false);
       }, 5000); // Change this value to control the duration
@@ -95,6 +106,7 @@ export default function CreateBlog() {
             placeholder="Enter title"
             required
             id="title"
+            value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
           <Select
@@ -113,6 +125,7 @@ export default function CreateBlog() {
         <div>
           <textarea
             onChange={(e) => setDescription(e.target.value)}
+            value={description}
             className="rounded "
             name="description"
             cols="90"
@@ -122,6 +135,7 @@ export default function CreateBlog() {
           ></textarea>
           <TextInput
             type="text"
+            value={keywords}
             placeholder="Enter keywords separated with comma"
             onChange={(e) => setKeywords(e.target.value)}
           />
@@ -131,6 +145,7 @@ export default function CreateBlog() {
             type="file"
             accept="image/*"
             name="image"
+            value={img}
             onChange={handleFileChange}
           />
           <Button
@@ -154,18 +169,22 @@ export default function CreateBlog() {
           type="submit"
           gradientDuoTone="cyanToBlue"
           className="mt-8"
-          disabled={isLoading}
+          disabled={isLoading || updateLoading}
         >
-          {isLoading ? 'Loading...' : 'Post'}
+          {isLoading || updateLoading ? 'Loading...' : 'Post'}
         </Button>
-        {error ? <div className="text-red-800 bg-red-200">{error}</div> : ''}
+        {error || updateError ? (
+          <div className="text-red-800 bg-red-200">{error || updateError}</div>
+        ) : (
+          ''
+        )}
         {showMsg && (
           <div
             className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
           text-green-900 bg-green-200 text-center p-3 rounded-lg font-semibold 
           text-lg opacity-70"
           >
-            {successMsg}
+            {successMsg || updateSuccessMsg}
           </div>
         )}
       </form>

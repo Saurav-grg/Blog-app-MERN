@@ -34,6 +34,42 @@ const createBlog = async (req, res) => {
     res.status(500).send({ error: error.message });
   }
 };
+//edit blog
+const editBlog = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, category, content, meta, image } = req.body;
+    const metaData = JSON.parse(meta);
+    const { description, keywords } = metaData;
+    // Find the blog post by id and update it
+    const blogPost = await Blog.findByIdAndUpdate(
+      id,
+      {
+        title,
+        category,
+        content,
+        meta: {
+          description,
+          keywords,
+        },
+        image,
+      },
+      { new: true }
+    );
+
+    // If the blog post doesn't exist, return a 404 error
+    if (!blogPost) {
+      return res.status(404).json({ error: 'Blog post not found' });
+    }
+
+    // If the blog post was updated successfully, return the updated blog post
+    res.status(200).json(blogPost);
+  } catch (error) {
+    // If there was an error, return a 500 error and the error message
+    res.status(500).json({ error: error.message });
+  }
+};
+
 //full blog view
 const getBlog = async (req, res) => {
   try {
@@ -108,4 +144,5 @@ module.exports = {
   getALlBlogs,
   getByCategory,
   deleteBlog,
+  editBlog,
 };

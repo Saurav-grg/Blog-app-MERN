@@ -5,7 +5,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.bubble.css'; // import the styles
 import Recommended from '../components/Recommended';
 import axios from 'axios';
-
+import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
 import { useAuthContext } from '../hooks/useAuthContext';
@@ -88,9 +88,14 @@ export default function FullBlog() {
                 <div className="flex justify-between gap-4">
                   {user ? (
                     <>
-                      <button>
-                        <FaEdit className=" xsm:size-6 text-green-400" />
-                      </button>
+                      <Link
+                        to={`/private/create-blog?id=${blog._id}`}
+                        state={blog}
+                      >
+                        <button>
+                          <FaEdit className=" xsm:size-6 text-green-400" />
+                        </button>
+                      </Link>
                       <button onClick={handleDelete}>
                         <MdDeleteForever className=" xsm:size-6 text-red-700" />
                       </button>
