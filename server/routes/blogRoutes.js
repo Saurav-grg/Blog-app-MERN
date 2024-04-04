@@ -41,7 +41,7 @@ router.get('/:category/:slug', getBlog);
 //developer routes
 router.delete('/delete-blog/:id', isDeveloper, deleteBlog);
 router.post('/create-blog', upload.single('image'), isDeveloper, createBlog);
-router.put('/edit-blog/:id', upload.single('image'), editBlog);
+router.put('/edit-blog/:id', upload.single('image'), isDeveloper, editBlog);
 
 module.exports = router;
 //(economics|fitness&health|technology|self-improvement)

@@ -47,7 +47,7 @@ export default function FullBlog() {
         // Assuming the response contains JSON data
         const data = await response.data;
         dispatch({ type: 'DELETE_BLOG', payload: data });
-        console.log('Deleted successfully');
+        console.log('Deleted successfully', data);
       } else {
         console.log(`Error: ${response.status} - ${response.statusText}`);
       }
@@ -55,12 +55,9 @@ export default function FullBlog() {
       console.error('An error occurred:', error.message);
     }
   };
-  // console.log(blog);
 
-  // if (!blog) {
-  //   return <div>Loading spinner...</div>; // or any loading spinner
-  // }
   if (blog) {
+    console.log(blog.img);
     return (
       <>
         <Helmet>

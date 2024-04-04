@@ -1,8 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 export default function useUpdatePost() {
+  const navigate = useNavigate();
+
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
-  const [successMsg, setSuccessMsg] = useState(null);
+
   const updatePost = async (id, formData) => {
     setIsLoading(true);
     setError(null);
@@ -24,9 +27,9 @@ export default function useUpdatePost() {
     }
     if (response.ok) {
       setIsLoading(false);
-      setSuccessMsg('Post Updated Successfully');
+      navigate(`/${json.category}/${json.slug}`);
     }
   };
 
-  return { error, isLoading, updatePost, successMsg };
+  return { error, isLoading, updatePost };
 }

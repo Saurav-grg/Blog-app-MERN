@@ -75,6 +75,7 @@ function Navbar() {
                     />
                     <div>{user.displayName}</div>
                   </div>
+                  <Link to={'/private/create-blog'}>Write</Link>
                   <button
                     className="border-2 p-2 rounded-md bg-red-100 text-red-700 font-semibold "
                     onClick={logout}

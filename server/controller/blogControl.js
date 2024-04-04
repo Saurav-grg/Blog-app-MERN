@@ -1,6 +1,7 @@
 const Blog = require('../models/blogModel');
 const slugify = require('slugify');
 const mongoose = require('mongoose');
+const fs = require('fs');
 
 //create new blog
 const createBlog = async (req, res) => {
@@ -21,7 +22,7 @@ const createBlog = async (req, res) => {
     const newBlog = await Blog.create({
       title,
       slug,
-      img: req.file ? req.file.path : 'uploads/default01.webp',
+      img: req.file ? req.file.path : 'uploads/defaultimg01.webp',
       meta: {
         description,
         keywords: keywordsArray,
@@ -129,15 +130,40 @@ const deleteBlog = async (req, res) => {
       return res.status(404).json({ error: 'data not found' });
     }
 
-    const blog = await Blog.findOneAndDelete({ _id: id });
+    // Find the blog post
+    const blog = await Blog.findById(id);
     if (!blog) {
       return res.status(404).json({ error: 'data not found' });
     }
-    res.status(200).json(blog);
+
+    // Delete the blog post from the database
+    const deletedBlog = await Blog.findByIdAndDelete(id);
+    if (!deletedBlog) {
+      return res.status(500).json({ error: 'Failed to delete blog post' });
+    }
+
+    // Delete the image file if it's not the default image
+    if (blog.img && blog.img !== 'uploads/defaultimg01.webp') {
+      fs.unlink(`${blog.img}`, (err) => {
+        if (err) {
+          console.error(err);
+          // If the image deletion fails, handle this error appropriately.
+          // You might choose to revert the database deletion here.
+          return res.status(500).json({ error: 'Failed to delete image file' });
+        }
+
+        // If both deletions were successful, send the success response
+        res.status(200).json(deletedBlog);
+      });
+    } else {
+      // If it's the default image, just send the success response
+      res.status(200).json(deletedBlog);
+    }
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
+
 module.exports = {
   createBlog,
   getBlog,

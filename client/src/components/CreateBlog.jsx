@@ -9,14 +9,15 @@ import { useLocation } from 'react-router-dom';
 // import CustomFontSize from '../QuillCustomize/CustomFontSize';
 
 export default function CreateBlog() {
-  const Size = Quill.import('attributors/style/size');
-  Size.whitelist = ['15px', '18px', '22px', '28px'];
-  // Register this configuration with Quill
-  Quill.register(Size, true);
+  // const Size = Quill.import('attributors/style/size');
+  // Size.whitelist = ['15px', '18px', '22px', '28px'];
+  // // Register this configuration with Quill
+  // Quill.register(Size, true);
   const modules = {
     toolbar: [
       [{ header: [1, 2, 3, false] }],
-      [{ size: ['15px', '18px', '22px', '28px'] }],
+      // [{ size: ['15px', '18px', '22px', '28px'] }],
+      [{ size: ['small', false, 'large', 'huge'] }],
       [{ font: [] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block'],
 
@@ -55,7 +56,6 @@ export default function CreateBlog() {
     error: updateError,
     isLoading: updateLoading,
     updatePost,
-    successMsg: updateSuccessMsg,
   } = useUpdatePost();
   //submit function
   const handleSubmit = async (e) => {
@@ -81,7 +81,7 @@ export default function CreateBlog() {
   const [showMsg, setShowMsg] = useState(true);
 
   useEffect(() => {
-    if (successMsg || updateSuccessMsg) {
+    if (successMsg) {
       const timer = setTimeout(() => {
         setShowMsg(false);
       }, 5000); // Change this value to control the duration
@@ -141,11 +141,12 @@ export default function CreateBlog() {
           />
         </div>
         <div className="flex justify-between border-teal-400 border-4 rounded items-center p-3 border-dotted">
+          {/* image input */}
           <FileInput
             type="file"
             accept="image/*"
             name="image"
-            value={img}
+            // value={img}
             onChange={handleFileChange}
           />
           <Button
@@ -184,7 +185,7 @@ export default function CreateBlog() {
           text-green-900 bg-green-200 text-center p-3 rounded-lg font-semibold 
           text-lg opacity-70"
           >
-            {successMsg || updateSuccessMsg}
+            {successMsg}
           </div>
         )}
       </form>

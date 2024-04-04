@@ -1,6 +1,5 @@
 import './index.css';
-
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
@@ -8,7 +7,7 @@ import CreateBlog from './components/CreateBlog';
 import FullBlog from './pages/FullBlog';
 import Signin from './pages/Signin';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Footer from './components/Footer';
 import CategoryAll from './pages/CategoryAll';
 import { useBlogsContext } from './hooks/useBlogsContext';
@@ -18,37 +17,37 @@ import { useAuthContext } from './hooks/useAuthContext';
 
 function App() {
   const { dispatch } = useBlogsContext();
-  const { dispatch: authDispatch, user } = useAuthContext();
+  const { dispatch: authDispatch } = useAuthContext();
 
   // const [user, setUser] = useState(null);
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
+    // const storedUser = localStorage.getItem('user');
 
-    if (storedUser) {
-      authDispatch({ type: 'LOGIN', payload: JSON.parse(storedUser) });
-      // setUser(JSON.parse(storedUser));
-    } else {
-      const getUser = async () => {
-        try {
-          const url = 'http://localhost:5000/api/auth/login/success';
-          const response = await axios.get(url, { withCredentials: true });
-          const { displayName, photos, role } = await response.data.user;
-          const userData = {
-            displayName,
-            photos: photos[0].value,
-            role,
-          };
-          authDispatch({ type: 'LOGIN', payload: userData });
-          // console.log(userData);
-          // setUser(userData);
+    // if (storedUser) {
+    //   authDispatch({ type: 'LOGIN', payload: JSON.parse(storedUser) });
+    //   // setUser(JSON.parse(storedUser));
+    // } else {
+    const getUser = async () => {
+      try {
+        const url = 'http://localhost:5000/api/auth/login/success';
+        const response = await axios.get(url, { withCredentials: true });
+        const { displayName, photos, role } = await response.data.user;
+        const userData = {
+          displayName,
+          photos: photos[0].value,
+          role,
+        };
+        authDispatch({ type: 'LOGIN', payload: userData });
+        // console.log(userData);
+        // setUser(userData);
 
-          localStorage.setItem('user', JSON.stringify(userData)); // Store for future use
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      getUser();
-    }
+        // localStorage.setItem('user', JSON.stringify(userData)); // Store for future use
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getUser();
+    // }
   }, []);
   useEffect(() => {
     const allBlogs = async () => {

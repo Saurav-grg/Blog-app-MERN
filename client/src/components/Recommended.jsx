@@ -10,9 +10,9 @@ export default function Recommended(props) {
         You Might also like
       </div>
       {recommend &&
-        recommend.map((blog) => {
+        recommend.map((blog, i) => {
           return (
-            <Link to={`/${props.category}/${blog.slug}`}>
+            <Link to={`/${props.category}/${blog.slug}`} key={i}>
               <div className="text-primary font-semibold w-full border-b-2 border-black py-2">
                 {blog.title}
               </div>
