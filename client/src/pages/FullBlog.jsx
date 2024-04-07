@@ -25,7 +25,12 @@ export default function FullBlog() {
         `http://localhost:5000/api/blogs/${category}/${slug}`
       );
       if (!response.ok) {
-        console.log('Error:', response.status, response.statusText);
+        console.log(
+          'Error:',
+          response.status,
+          response.statusText,
+          response.json()
+        );
         return;
       }
       const data = await response.json();
@@ -57,7 +62,7 @@ export default function FullBlog() {
   };
 
   if (blog) {
-    console.log(blog.img);
+    // console.log(blog.img);
     return (
       <>
         <Helmet>

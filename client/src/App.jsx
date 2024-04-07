@@ -20,35 +20,45 @@ function App() {
   const { dispatch: authDispatch } = useAuthContext();
 
   // const [user, setUser] = useState(null);
+  // const storedUser = localStorage.getItem('user');
+
+  // if (storedUser) {
+  //   authDispatch({ type: 'LOGIN', payload: JSON.parse(storedUser) });
+  //   // setUser(JSON.parse(storedUser));
+  // } else {
+  // console.log(userData);
+  // setUser(userData);
+
+  // localStorage.setItem('user', JSON.stringify(userData)); // Store for future use
+  const getUser = async () => {
+    try {
+      // const isSessionActive = checkIfSessionIsActive();
+
+      // if (isSessionActive) {
+      const url = 'http://localhost:5000/api/auth/login/success';
+      const response = await axios.get(url, { withCredentials: true });
+      const { displayName, photos, role } = await response.data.user;
+      const userData = {
+        displayName,
+        photos: photos[0].value,
+        role,
+      };
+      authDispatch({ type: 'LOGIN', payload: userData });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
-    // const storedUser = localStorage.getItem('user');
-
-    // if (storedUser) {
-    //   authDispatch({ type: 'LOGIN', payload: JSON.parse(storedUser) });
-    //   // setUser(JSON.parse(storedUser));
-    // } else {
-    const getUser = async () => {
-      try {
-        const url = 'http://localhost:5000/api/auth/login/success';
-        const response = await axios.get(url, { withCredentials: true });
-        const { displayName, photos, role } = await response.data.user;
-        const userData = {
-          displayName,
-          photos: photos[0].value,
-          role,
-        };
-        authDispatch({ type: 'LOGIN', payload: userData });
-        // console.log(userData);
-        // setUser(userData);
-
-        // localStorage.setItem('user', JSON.stringify(userData)); // Store for future use
-      } catch (error) {
-        console.log(error);
-      }
-    };
     getUser();
-    // }
   }, []);
+  // const checkIfSessionIsActive = () => {
+  //   // Check if the connect.sid cookie exists
+  //   const sessionCookie = document.cookie
+  //     .split(';')
+  //     .find((cookie) => cookie.trim().startsWith('connect.sid='));
+
+  //   return sessionCookie;
+  // };
   useEffect(() => {
     const allBlogs = async () => {
       const response = await axios.get('http://localhost:5000/api/blogs');

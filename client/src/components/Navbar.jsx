@@ -1,6 +1,7 @@
 import { Link, NavLink } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
+import ProfileBox from './ProfileBox';
 
 function Navbar() {
   const { user } = useAuthContext();
@@ -16,10 +17,7 @@ function Navbar() {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-  const logout = () => {
-    localStorage.clear();
-    window.open('http://localhost:5000/api/auth/logout', '_self');
-  };
+
   return (
     <>
       <nav className=" max-h-[210px] min-h[50px] bg-light z-10 py-2">
@@ -64,32 +62,15 @@ function Navbar() {
                 ZenQuest
               </a>
             </div>
-            <div className="absolute md:right-20 right-5">
+            <div className="absolute md:right-24 right-5">
               {user ? (
                 <div className="flex gap-2">
-                  <div className="flex items-center gap-2 bg-gray-200 rounded-md p-1">
-                    <img
-                      className="w-9 h-9 rounded-full"
-                      src={user.photos}
-                      alt="profile"
-                    />
-                    <div>{user.displayName}</div>
+                  <div className="flex items-center gap-2 rounded-md p-1">
+                    <ProfileBox />
                   </div>
-                  <Link to={'/private/create-blog'}>Write</Link>
-                  <button
-                    className="border-2 p-2 rounded-md bg-red-100 text-red-700 font-semibold "
-                    onClick={logout}
-                  >
-                    Logout
-                  </button>
                 </div>
               ) : (
                 ''
-                // <Link to="/sign-in">
-                //   <button className="border-2 px-2 py-1 rounded-md text-primary font-semibold border-blue-900">
-                //     Sign in
-                //   </button>
-                // </Link>
               )}
             </div>
           </div>
