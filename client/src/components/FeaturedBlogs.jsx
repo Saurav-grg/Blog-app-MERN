@@ -38,7 +38,7 @@ const FeaturedBlogs = () => {
           <img
             className="w-full object-cover h-full"
             alt="imag"
-            src={featuredBlogs[0].img}
+            src={`http://localhost:5000/${featuredBlogs[0].img}`}
           />
         </div>
         <div className="">{featuredBlogs[0].meta.description}</div>
@@ -68,7 +68,7 @@ const FeaturedBlogs = () => {
             <img
               className="w-full object-cover h-full"
               alt="imag"
-              src="/robo-w-hat.jpg"
+              src={`http://localhost:5000/${featuredBlogs[1].img}`}
             />
           </div>
 
@@ -96,7 +96,7 @@ const FeaturedBlogs = () => {
             <img
               className="w-full object-cover h-full"
               alt="imag"
-              src="/robo-w-hat.jpg"
+              src={`http://localhost:5000/${featuredBlogs[2].img}`}
             />
           </div>
 

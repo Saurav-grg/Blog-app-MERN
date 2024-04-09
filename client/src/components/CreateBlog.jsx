@@ -43,8 +43,8 @@ export default function CreateBlog() {
   const [title, setTitle] = useState(state?.title || '');
   const [category, setCategory] = useState(state?.category || 'uncategorized');
   const [content, setContent] = useState(state?.content || '');
-  const [description, setDescription] = useState(state?.description || '');
-  const [keywords, setKeywords] = useState(state?.keywords || '');
+  const [description, setDescription] = useState(state?.meta.description || '');
+  const [keywords, setKeywords] = useState(state?.meta.keywords || '');
   //handle file
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];

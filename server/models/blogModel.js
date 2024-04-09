@@ -36,7 +36,6 @@ const blogSchema = new mongoose.Schema(
     },
     img: {
       type: String,
-      default: '/uploads/defaultimg01.webp',
     },
     slug: {
       type: String,

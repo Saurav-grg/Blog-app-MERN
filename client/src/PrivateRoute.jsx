@@ -19,7 +19,7 @@ const PrivateRoute = () => {
   if (user && user.role === 'developer') {
     return <Outlet />;
   } else {
-    return <Navigate to="/sign-in" />;
+    return <Navigate to="/admin/sign-in" />;
   }
 };
 

@@ -2,10 +2,12 @@ const isDeveloper = (req, res, next) => {
   // Check if the user is authenticated
   if (!req.isAuthenticated()) {
     return res.status(401).json({ error: 'Unauthorized for this request' });
-  }
+  } // Call the next middleware or route handler
 
-  // Check if the user is a developer
   const user = req.user;
+  // console.log(user);
+  // Check if the user is a developer
+
   if (user.role === 'developer') {
     // User is a developer, proceed to the next middleware/route handler
     next();

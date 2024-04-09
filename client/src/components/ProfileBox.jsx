@@ -13,8 +13,8 @@ function classNames(...classes) {
 export default function ProfileBox() {
   const { user } = useAuthContext();
   const logout = () => {
-    // localStorage.clear();
-    window.open('http://localhost:5000/api/auth/logout', '_self');
+    localStorage.clear();
+    window.open('/api/auth/logout', '_self');
   };
   return (
     <Menu as="div" className="relative inline-block text-left">

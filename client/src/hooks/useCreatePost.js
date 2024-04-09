@@ -7,14 +7,11 @@ export default function useCreatePost() {
     setIsLoading(true);
     setError(null);
 
-    const response = await fetch(
-      'http://localhost:5000/api/blogs/create-blog',
-      {
-        method: 'POST',
-        body: formData,
-        credentials: 'include',
-      }
-    );
+    const response = await fetch('/api/blogs/create-blog', {
+      method: 'POST',
+      body: formData,
+      credentials: 'include',
+    });
 
     const json = await response.json();
     console.log(json);

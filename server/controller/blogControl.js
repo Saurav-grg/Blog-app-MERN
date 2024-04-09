@@ -39,22 +39,29 @@ const createBlog = async (req, res) => {
 const editBlog = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, category, content, meta, image } = req.body;
+    const { title, category, content, meta, img } = req.body;
     const metaData = JSON.parse(meta);
     const { description, keywords } = metaData;
+
+    const updates = {
+      title,
+      category,
+      content,
+      meta: { description, keywords },
+    };
+
+    // If the image field is not empty or null, update the image field
+    // if (img !== null && img !== '') {
+    //   updates.img = req.file.path;
+    // }
+    if (req.file) {
+      updates.image = req.file.path;
+    }
+
     // Find the blog post by id and update it
     const blogPost = await Blog.findByIdAndUpdate(
       id,
-      {
-        title,
-        category,
-        content,
-        meta: {
-          description,
-          keywords,
-        },
-        image,
-      },
+      { $set: updates },
       { new: true }
     );
 

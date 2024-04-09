@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { FaShareSquare } from 'react-icons/fa';
 import { formatDistanceToNow } from 'date-fns/formatDistanceToNow';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.bubble.css'; // import the styles
@@ -12,6 +11,7 @@ import { useAuthContext } from '../hooks/useAuthContext';
 import { FaEdit } from 'react-icons/fa';
 import { MdDeleteForever } from 'react-icons/md';
 import { useBlogsContext } from '../hooks/useBlogsContext';
+import Sharemodal from '../components/Sharemodal';
 
 export default function FullBlog() {
   const { dispatch } = useBlogsContext();
@@ -21,9 +21,7 @@ export default function FullBlog() {
   const { category, slug } = useParams();
   useEffect(() => {
     const fetchBlog = async () => {
-      const response = await fetch(
-        `http://localhost:5000/api/blogs/${category}/${slug}`
-      );
+      const response = await fetch(`/api/blogs/${category}/${slug}`);
       if (!response.ok) {
         console.log(
           'Error:',
@@ -45,7 +43,7 @@ export default function FullBlog() {
   }, [slug, category]);
 
   const handleDelete = async () => {
-    const url = `http://localhost:5000/api/blogs/delete-blog/${blog._id}`;
+    const url = `/api/blogs/delete-blog/${blog._id}`;
     try {
       const response = await axios.delete(url, { withCredentials: true });
       if (response.status === 200) {
@@ -105,9 +103,8 @@ export default function FullBlog() {
                   ) : (
                     ''
                   )}
-                  <button>
-                    <FaShareSquare className=" xsm:size-6 text-blue-700" />
-                  </button>
+                  {/* share button */}
+                  <Sharemodal />
                 </div>
               </div>
               <img

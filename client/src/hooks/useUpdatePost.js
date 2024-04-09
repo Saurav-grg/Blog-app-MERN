@@ -10,14 +10,11 @@ export default function useUpdatePost() {
     setIsLoading(true);
     setError(null);
 
-    const response = await fetch(
-      `http://localhost:5000/api/blogs/edit-blog/${id}`,
-      {
-        method: 'PUT',
-        body: formData,
-        credentials: 'include',
-      }
-    );
+    const response = await fetch(`/api/blogs/edit-blog/${id}`, {
+      method: 'PUT',
+      body: formData,
+      credentials: 'include',
+    });
 
     const json = await response.json();
     console.log(json);
