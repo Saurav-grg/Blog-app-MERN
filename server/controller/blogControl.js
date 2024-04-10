@@ -101,9 +101,9 @@ const getBlog = async (req, res) => {
 //get all
 const getALlBlogs = async (req, res) => {
   try {
-    const blogPost = await Blog.find().select(
-      '-content -comments -likes -updatedAt'
-    );
+    const blogPost = await Blog.find()
+      .select('-content -comments -likes -updatedAt')
+      .sort({ createdAt: -1 });
 
     if (!blogPost) {
       return res.status(404).json({ error: 'Blogs empty ' });
