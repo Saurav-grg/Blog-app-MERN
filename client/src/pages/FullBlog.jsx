@@ -71,7 +71,7 @@ export default function FullBlog() {
           <div className="flex flex-col xsm:w-3/4 w-[95%] ">
             <div className=" ">
               <div className="xsm:text-3xl text-xl max-w-[850px] font-bold text-blue-900 font-sans">
-                Hello {blog.title} in this obsecure time and economy of this
+                {blog.title}
               </div>
               <div className="flex justify-between max-w-[850px] my-2 items-center p-1 px-3">
                 <div className="flex gap-4">

@@ -28,7 +28,7 @@ passport.use(
         //     displayName: profile.displayName,
         //     email: profile.emails[0].value,
         //     photos: profile.photos,
-        //     role: 'user', // Set the role to 'developer' for new users
+        //     role: 'developer', // Set the role to 'developer' for new users
         //     // permissions: ['accessProtectedRoutes'],
         //     // Add any other fields from the Google profile as needed
         //   });

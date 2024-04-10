@@ -16,9 +16,6 @@ export default {
         secondary: '#A6E3E9',
         light: '#E3FDFD',
       },
-      gridTemplateColumns: {
-        custom: '2fr 1fr',
-      },
     },
   },
   plugins: [require('flowbite/plugin')],

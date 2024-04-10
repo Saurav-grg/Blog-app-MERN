@@ -34,15 +34,20 @@ const FeaturedBlogs = () => {
           {featuredBlogs[0].title}
         </p>
 
-        <div className=" w-full p-2">
+        <div className=" w-full p-2 h-[60%]">
           <img
             className="w-full object-cover h-full"
-            alt="imag"
+            alt="image"
             src={`http://localhost:5000/${featuredBlogs[0].img}`}
           />
         </div>
-        <div className="">{featuredBlogs[0].meta.description}</div>
-        <div className="flex items-center justify-between text-gray-500 ">
+        <div className="max-h-[50px] overflow-hidden">
+          {featuredBlogs[0].meta.description}
+        </div>
+        <div
+          className="flex items-center justify-between text-gray-500"
+          // style={{ boxShadow: '0 -5px 10px -5px rgba(255, 255, 255, 0.3)' }}
+        >
           <span>12 feb,2024</span>
           {/* <FaHeart />
           <FaComments /> */}
