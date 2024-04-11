@@ -90,7 +90,7 @@ export default function CreateBlog() {
     }
   }, [successMsg]);
   return (
-    <div className="p-3 max-w-3xl mx-auto min-h-screen">
+    <div className="p-3 max-w-3xl mx-auto min-h-screen mb-12">
       <h1 className="text-center text-3xl my-4 text-primary font-bold">
         Create a post
       </h1>
@@ -123,16 +123,6 @@ export default function CreateBlog() {
           </Select>
         </div>
         <div>
-          <textarea
-            onChange={(e) => setDescription(e.target.value)}
-            value={description}
-            className="rounded "
-            name="description"
-            cols="90"
-            rows="2"
-            placeholder="Enter description"
-            id="description"
-          ></textarea>
           <TextInput
             type="text"
             value={keywords}
@@ -158,22 +148,34 @@ export default function CreateBlog() {
             upload
           </Button>
         </div>
-        <ReactQuill
-          theme="snow"
-          className="h-72 "
-          value={content}
-          onChange={(value) => setContent(value)}
-          modules={modules}
-        />
+        <textarea
+          onChange={(e) => setDescription(e.target.value)}
+          value={description}
+          className="rounded "
+          name="description"
+          cols="90"
+          rows="2"
+          placeholder="Enter description"
+          id="description"
+        ></textarea>
+        <div className="flex flex-col xsm:gap-24 gap-44 ">
+          <ReactQuill
+            theme="snow"
+            className=" h-96  "
+            value={content}
+            onChange={(value) => setContent(value)}
+            modules={modules}
+          />
 
-        <Button
-          type="submit"
-          gradientDuoTone="cyanToBlue"
-          className="mt-8"
-          disabled={isLoading || updateLoading}
-        >
-          {isLoading || updateLoading ? 'Loading...' : 'Post'}
-        </Button>
+          <Button
+            type="submit"
+            gradientDuoTone="cyanToBlue"
+            className=""
+            disabled={isLoading || updateLoading}
+          >
+            {isLoading || updateLoading ? 'Loading...' : 'Post'}
+          </Button>
+        </div>
         {error || updateError ? (
           <div className="text-red-800 bg-red-200">{error || updateError}</div>
         ) : (

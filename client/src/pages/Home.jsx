@@ -41,14 +41,14 @@ const Home = () => {
         <div className="w-full mx-auto">
           <div
             className=" mx-auto py-2 smd:w-[85%] border-b-2
-         flex justify-around md:justify-between items-center"
+         flex  items-center"
           >
             <p className="md:text-3xl text-xl  font-bold text-blue-900">
               Latest upload
             </p>
-            <button className=" px-2 py-1 font-medium rounded-md text-blue-900 border-blue-900 border-2">
+            {/* <button className=" px-2 py-1 font-medium rounded-md text-blue-900 border-blue-900 border-2">
               view more..
-            </button>
+            </button> */}
           </div>
           <Category />
         </div>

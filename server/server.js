@@ -19,7 +19,8 @@ app.use((req, res, next) => {
 });
 //
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173', 'http://zenquest.vercel.app'],
+
   credentials: true,
 };
 
@@ -37,15 +38,20 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.get('/', (req, res) => {
+  res.json('Hello there!! ');
+});
 app.use('/api/blogs', blogRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/uploads', express.static('uploads'));
 
 mongoose.connect(process.env.MONGODB_KEY).then(() => {
   console.log('Connected to database');
-  app.listen(5000, () =>
+  app.listen(process.env.PORT || 5000, () =>
     console.log(
-      'Server is running on port 5000, http://localhost:5000/api/blogs'
+      `Server is running on port ${
+        process.env.PORT || 5000
+      }, http://zenquest-api.vercel.app`
     )
   );
 });
