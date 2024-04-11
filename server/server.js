@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 });
 //
 const corsOptions = {
-  origin: ['http://localhost:5173', 'http://zenquest.vercel.app'],
+  origin: ['http://localhost:5173', 'http://zenith-quest.vercel.app'],
 
   credentials: true,
 };
