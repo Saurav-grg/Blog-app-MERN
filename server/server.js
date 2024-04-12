@@ -51,7 +51,9 @@ mongoose.connect(process.env.MONGODB_KEY).then(() => {
     console.log(
       `Server is running on port ${
         process.env.PORT || 5000
-      }, http://zenquest-api.vercel.app`
+      }, http://zenquest-api.vercel.app , http://localhost:${
+        process.env.PORT
+      }/api/blogs`
     )
   );
 });
