@@ -43,7 +43,7 @@ app.get('/', (req, res) => {
 });
 app.use('/api/blogs', blogRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/uploads', express.static('uploads'));
+// app.use('/uploads', express.static('uploads'));
 
 mongoose.connect(process.env.MONGODB_KEY).then(() => {
   console.log('Connected to database');
