@@ -38,7 +38,7 @@ const FeaturedBlogs = () => {
           <img
             className="w-full object-cover h-full"
             alt="image"
-            src={`http://localhost:5000/${featuredBlogs[0].img}`}
+            src={`http://localhost:4428/${featuredBlogs[0].img}`}
           />
         </div>
         <div className="max-h-[50px] overflow-hidden">
@@ -73,7 +73,7 @@ const FeaturedBlogs = () => {
             <img
               className="w-full object-cover h-full"
               alt="imag"
-              src={`http://localhost:5000/${featuredBlogs[1].img}`}
+              src={`http://localhost:4428/${featuredBlogs[1].img}`}
             />
           </div>
 
@@ -101,7 +101,7 @@ const FeaturedBlogs = () => {
             <img
               className="w-full object-cover h-full"
               alt="imag"
-              src={`http://localhost:5000/${featuredBlogs[2].img}`}
+              src={`http://localhost:4428/${featuredBlogs[2].img}`}
             />
           </div>
 

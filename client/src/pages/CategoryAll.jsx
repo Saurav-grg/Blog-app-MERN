@@ -31,7 +31,7 @@ export default function CategoryAll() {
                 <div className="w-[600px] max-h-[400px]">
                   <img
                     className="w-full h-full object-cover shadow-2xl rounded-md"
-                    src={`http://localhost:5000/${blog.img}`}
+                    src={`http://localhost:4428/${blog.img}`}
                     alt="image"
                   />
                 </div>
