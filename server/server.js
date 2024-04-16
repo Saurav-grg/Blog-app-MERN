@@ -7,10 +7,15 @@ const cors = require('cors');
 const blogRoutes = require('./routes/blogRoutes');
 const authRoutes = require('./routes/authRoutes');
 
+const proxy = require('express-http-proxy');
 const passport = require('passport');
 const app = express();
 require('dotenv').config();
 
+app.set('trust proxy', true);
+
+// Use the express-http-proxy middleware
+app.use(proxy());
 const passportSetup = require('./passport');
 
 //middleware
