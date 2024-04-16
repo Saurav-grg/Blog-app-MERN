@@ -2,8 +2,8 @@ const passport = require('passport');
 const express = require('express');
 const router = express.Router();
 
-const CLIENT_URL = 'http://localhost:5173/';
-// const CLIENT_URL = 'https://zenith-quest/';
+// const CLIENT_URL = 'http://localhost:5173/';
+const CLIENT_URL = 'https://zenith-quest.vercel.app/';
 
 router.get('/login/failed', (req, res) => {
   res.status(401).json({
