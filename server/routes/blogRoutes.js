@@ -1,5 +1,5 @@
 const express = require('express');
-const crypto = require('crypto');
+// const crypto = require('crypto');
 const router = express.Router();
 const {
   createBlog,
@@ -10,19 +10,19 @@ const {
   editBlog,
 } = require('../controller/blogControl');
 
-const multer = require('multer');
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads');
-  },
-  filename: function (req, file, cb) {
-    const uniqueFilename = crypto.randomBytes(8).toString('hex'); // 16 characters instead of 32
-    const fileExtension = file.originalname.split('.').pop();
-    cb(null, uniqueFilename + '.' + fileExtension);
-  },
-});
+// const multer = require('multer');
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, 'uploads');
+//   },
+//   filename: function (req, file, cb) {
+//     const uniqueFilename = crypto.randomBytes(8).toString('hex'); // 16 characters instead of 32
+//     const fileExtension = file.originalname.split('.').pop();
+//     cb(null, uniqueFilename + '.' + fileExtension);
+//   },
+// });
 
-const upload = multer({ storage: storage });
+// const upload = multer({ storage: storage });
 
 // const { isAuthorized } = require('../middleware/isAuthorized');
 const { isDeveloper } = require('../middleware/isDeveloper');
@@ -40,8 +40,8 @@ router.get('/:category/:slug', getBlog);
 
 //developer routes
 router.delete('/delete-blog/:id', isDeveloper, deleteBlog);
-router.post('/create-blog', upload.single('image'), isDeveloper, createBlog);
-router.put('/edit-blog/:id', upload.single('image'), isDeveloper, editBlog);
+router.post('/create-blog', isDeveloper, createBlog);
+router.put('/edit-blog/:id', isDeveloper, editBlog);
 
 module.exports = router;
 //(economics|fitness&health|technology|self-improvement)

@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 import Footer from './components/Footer';
 import CategoryAll from './pages/CategoryAll';
 import { useBlogsContext } from './hooks/useBlogsContext';
-import PrivateRoute from './PrivateRoute';
+import PrivateRoute from './other/PrivateRoute';
 import Errorpage from './pages/Errorpage';
 import { useAuthContext } from './hooks/useAuthContext';
 

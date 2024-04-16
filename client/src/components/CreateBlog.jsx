@@ -1,18 +1,21 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { FileInput, Select, TextInput, Button } from 'flowbite-react';
-import ReactQuill, { Quill } from 'react-quill';
+import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { CircularProgressbar } from 'react-circular-progressbar';
 import useCreatePost from '../hooks/useCreatePost';
 import useUpdatePost from '../hooks/useUpdatePost';
 import { useLocation } from 'react-router-dom';
-// import CustomFontSize from '../QuillCustomize/CustomFontSize';
+import { app } from '../other/firebase';
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from 'firebase/storage';
 
 export default function CreateBlog() {
-  // const Size = Quill.import('attributors/style/size');
-  // Size.whitelist = ['15px', '18px', '22px', '28px'];
-  // // Register this configuration with Quill
-  // Quill.register(Size, true);
   const modules = {
     toolbar: [
       [{ header: [1, 2, 3, false] }],
@@ -40,15 +43,61 @@ export default function CreateBlog() {
   const state = useLocation().state;
   //form data
   const [img, setImg] = useState(null);
+  const [imageUploadProgress, setImageUploadProgress] = useState(null);
+  const [imageUploadError, setImageUploadError] = useState(null);
+  const [imageURL, setImageURL] = useState(null);
+
   const [title, setTitle] = useState(state?.title || '');
   const [category, setCategory] = useState(state?.category || 'uncategorized');
   const [content, setContent] = useState(state?.content || '');
   const [description, setDescription] = useState(state?.meta.description || '');
   const [keywords, setKeywords] = useState(state?.meta.keywords || '');
+
   //handle file
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     setImg(selectedFile);
+  };
+  //firebse
+  const handeUploadImage = async () => {
+    try {
+      // console.log(img);
+
+      if (!img) {
+        setImageUploadError('Please select an image');
+        return;
+      }
+      setImageUploadError(null);
+      const storage = getStorage(app);
+      const fileName = new Date().getTime() + img.name;
+      // console.log(fileName);
+      const storageRef = ref(storage, fileName);
+      const uploadTask = uploadBytesResumable(storageRef, img);
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setImageUploadProgress(progress.toFixed(0));
+        },
+        (error) => {
+          setImageUploadError('Image upload failed try block');
+          setImageUploadProgress(null);
+          console.log(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setImageUploadProgress(null);
+            setImageUploadError(null);
+            setImageURL(downloadURL);
+            // setFormData({ ...formData, img: downloadURL });
+          });
+        }
+      );
+    } catch (error) {
+      setImageUploadError('Image upload failed');
+      setImageUploadProgress(null);
+    }
   };
 
   const { error, isLoading, createPost, successMsg } = useCreatePost();
@@ -62,15 +111,16 @@ export default function CreateBlog() {
     e.preventDefault();
 
     const metaData = { description, keywords };
-    const metaDataString = JSON.stringify(metaData);
+    // const metaDataString = JSON.stringify(metaData);
 
     const formData = new FormData();
 
-    formData.append('image', img);
-    formData.append('title', title);
+    formData.append('title', JSON.stringify(title));
     formData.append('category', category);
+    formData.append('img', imageURL);
     formData.append('content', content);
-    formData.append('meta', metaDataString);
+    formData.append('meta', metaData);
+    console.log(imageURL);
 
     if (state) {
       await updatePost(state._id, formData); // Replace updatePost with your actual function for updating a post
@@ -89,6 +139,7 @@ export default function CreateBlog() {
       return () => clearTimeout(timer); // This will clear the timer when the component unmounts
     }
   }, [successMsg]);
+  // console.log(imageUploadProgress);
   return (
     <div className="p-3 max-w-3xl mx-auto min-h-screen mb-12">
       <h1 className="text-center text-3xl my-4 text-primary font-bold">
@@ -143,11 +194,23 @@ export default function CreateBlog() {
             type="button"
             gradientDuoTone="purpleToBlue"
             outline
-            // onClick={() => setImage(base64)}
+            onClick={handeUploadImage}
+            disabled={imageUploadProgress}
           >
-            upload
+            {imageUploadProgress ? (
+              <div className="w-16 h-16">
+                <CircularProgressbar
+                  value={imageUploadProgress}
+                  text={`${imageUploadProgress || 0}%`}
+                />
+              </div>
+            ) : (
+              'Upload Image'
+            )}
           </Button>
         </div>
+        {imageUploadError && <span>{imageUploadError}</span>}
+        {/* description meta */}
         <textarea
           onChange={(e) => setDescription(e.target.value)}
           value={description}
@@ -158,6 +221,7 @@ export default function CreateBlog() {
           placeholder="Enter description"
           id="description"
         ></textarea>
+
         <div className="flex flex-col xsm:gap-24 gap-44 ">
           <ReactQuill
             theme="snow"
