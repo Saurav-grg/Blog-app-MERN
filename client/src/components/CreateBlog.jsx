@@ -111,16 +111,17 @@ export default function CreateBlog() {
     e.preventDefault();
 
     const metaData = { description, keywords };
-    // const metaDataString = JSON.stringify(metaData);
+    const metaDataString = JSON.stringify(metaData);
 
     const formData = new FormData();
 
-    formData.append('title', JSON.stringify(title));
+    formData.append('title', title);
     formData.append('category', category);
-    formData.append('img', imageURL);
+    if (imageURL) {
+      formData.append('img', imageURL);
+    }
     formData.append('content', content);
-    formData.append('meta', metaData);
-    console.log(imageURL);
+    formData.append('meta', metaDataString);
 
     if (state) {
       await updatePost(state._id, formData); // Replace updatePost with your actual function for updating a post
@@ -146,7 +147,7 @@ export default function CreateBlog() {
         Create a post
       </h1>
       <form
-        encType="multipart/form-data"
+        // encType="multipart/form-data"
         onSubmit={handleSubmit}
         className="flex flex-col gap-5 mb-5"
       >
@@ -187,7 +188,7 @@ export default function CreateBlog() {
             type="file"
             accept="image/*"
             name="image"
-            // value={img}
+            // value={imageURL}
             onChange={handleFileChange}
           />
           <Button

@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 const CLIENT_URL = 'http://localhost:5173/';
+// const CLIENT_URL = 'https://zenith-quest/';
 
 router.get('/login/failed', (req, res) => {
   res.status(401).json({
@@ -29,7 +30,17 @@ router.get('/logout', (req, res) => {
         .status(500)
         .json({ success: false, message: 'Error logging out' });
     }
-    res.redirect(CLIENT_URL);
+    // Destroy the session
+    req.session.destroy(function (err) {
+      if (err) {
+        console.error(err);
+        return res
+          .status(500)
+          .json({ success: false, message: 'Error destroying session' });
+      }
+      // Redirect or send a success response
+      res.redirect(CLIENT_URL);
+    });
   });
 });
 router.get(

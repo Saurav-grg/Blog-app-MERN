@@ -10,19 +10,13 @@ const {
   editBlog,
 } = require('../controller/blogControl');
 
-// const multer = require('multer');
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, 'uploads');
-//   },
-//   filename: function (req, file, cb) {
-//     const uniqueFilename = crypto.randomBytes(8).toString('hex'); // 16 characters instead of 32
-//     const fileExtension = file.originalname.split('.').pop();
-//     cb(null, uniqueFilename + '.' + fileExtension);
-//   },
-// });
+/*  When using FormData, the data is not sent as a plain JSON object but as a multipart/form-data request.
+    To fix this issue, you need to make sure that your server-side
+    code is properly parsing the incoming multipart/form-data request. In your case, since you're using Express.js,
+    you can use the multer middleware to handle file uploads and parse the request body.*/
 
-// const upload = multer({ storage: storage });
+const multer = require('multer');
+const upload = multer();
 
 // const { isAuthorized } = require('../middleware/isAuthorized');
 const { isDeveloper } = require('../middleware/isDeveloper');
@@ -40,8 +34,8 @@ router.get('/:category/:slug', getBlog);
 
 //developer routes
 router.delete('/delete-blog/:id', isDeveloper, deleteBlog);
-router.post('/create-blog', isDeveloper, createBlog);
-router.put('/edit-blog/:id', isDeveloper, editBlog);
+router.post('/create-blog', upload.none(), isDeveloper, createBlog);
+router.put('/edit-blog/:id', upload.none(), isDeveloper, editBlog);
 
 module.exports = router;
 //(economics|fitness&health|technology|self-improvement)

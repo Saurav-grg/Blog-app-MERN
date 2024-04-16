@@ -3,6 +3,12 @@ export default function useCreatePost() {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
   const [successMsg, setSuccessMsg] = useState(null);
+
+  /*  When using FormData, the data is not sent as a plain JSON object but as a multipart/form-data request.
+    To fix this issue, you need to make sure that your server-side
+    code is properly parsing the incoming multipart/form-data request. In your case, since you're using Express.js,
+    you can use the multer middleware to handle file uploads and parse the request body.*/
+
   const createPost = async (formData) => {
     setIsLoading(true);
     setError(null);

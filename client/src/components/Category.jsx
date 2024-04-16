@@ -25,7 +25,7 @@ const Category = () => {
                         <img
                           className="w-full object-cover h-full rounded-md"
                           alt="image"
-                          src={`http://localhost:5000/${blog.img}`}
+                          src={blog.img}
                         />
                       </div>
                       <div className="py-1">

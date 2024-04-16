@@ -108,7 +108,7 @@ export default function FullBlog() {
                 </div>
               </div>
               <img
-                src={`http://localhost:5000/${blog.img}`}
+                src={blog.img}
                 alt="image"
                 className="max-h-[400px] w-[850px] object-cover rounded"
               />

@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
+
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const cors = require('cors');
 const blogRoutes = require('./routes/blogRoutes');
 const authRoutes = require('./routes/authRoutes');
@@ -25,14 +27,16 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+const mongoUrl = process.env.MONGODB_KEY;
 app.use(
   session({
     secret: process.env.SESSION_SECRET, // Replace with a secure secret key
     resave: false,
     saveUninitialized: true,
     cookie: {
-      maxAge: 24 * 60 * 60 * 1000 * 7, // 7 days
+      maxAge: 24 * 60 * 60 * 1000 * 2, // 2 days
     },
+    store: MongoStore.create({ mongoUrl }),
   })
 );
 app.use(passport.initialize());

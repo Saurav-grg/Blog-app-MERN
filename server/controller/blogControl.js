@@ -1,18 +1,15 @@
 const Blog = require('../models/blogModel');
 const slugify = require('slugify');
 const mongoose = require('mongoose');
-// const fs = require('fs');
 
 //create new blog
 const createBlog = async (req, res) => {
   try {
-    const { title, ...rest } = req.body;
-    // const metaData = JSON.parse(meta);
-    // const { description, keywords } = metaData;
-    // const keywordsArray = keywords.split(',').map((keyword) => keyword.trim());
+    const { title, meta, ...rest } = req.body;
+    const metaData = JSON.parse(meta);
 
     // Generate slug from the title
-    const slug = slugify(JSON.parse(title), {
+    const slug = slugify(title, {
       lower: true,
       strict: true,
       trim: true,
@@ -22,37 +19,33 @@ const createBlog = async (req, res) => {
     const newBlog = await Blog.create({
       title,
       slug,
+      meta: metaData,
       ...rest,
     });
-    // console.log(req.file);
     res.status(200).json(newBlog);
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
 };
+
 //edit blog
 const editBlog = async (req, res) => {
   try {
     const { id } = req.params;
     const { title, category, content, meta, img } = req.body;
-    // const metaData = JSON.parse(meta);
-    // const { description, keywords } = metaData;
+    const metaData = JSON.parse(meta);
 
     const updates = {
       title,
-      img,
       category,
       content,
-      meta,
+      meta: metaData,
     };
 
     // If the image field is not empty or null, update the image field
-    // if (img !== null && img !== '') {
-    //   updates.img = req.file.path;
-    // }
-    // if (req.file) {
-    //   updates.image = req.file.path;
-    // }
+    if (img !== null && img !== '') {
+      updates.img = img;
+    }
 
     // Find the blog post by id and update it
     const blogPost = await Blog.findByIdAndUpdate(
@@ -144,22 +137,6 @@ const deleteBlog = async (req, res) => {
     if (!deletedBlog) {
       return res.status(500).json({ error: 'Failed to delete blog post' });
     }
-
-    // Delete the image file if it's not the default image
-    // if (blog.img && blog.img !== 'uploads/defaultimg01.webp') {
-    //   fs.unlink(`${blog.img}`, (err) => {
-    //     if (err) {
-    //       console.error(err);
-    //       // If the image deletion fails, handle this error appropriately.
-    //       // You might choose to revert the database deletion here.
-    //       return res.status(500).json({ error: 'Failed to delete image file' });
-    //     }
-
-    //     // If both deletions were successful, send the success response
-    //     res.status(200).json(deletedBlog);
-    //   });
-    // } else {
-    // If it's the default image, just send the success response
     res.status(200).json(deletedBlog);
   } catch (error) {
     res.status(400).json({ error: error.message });
