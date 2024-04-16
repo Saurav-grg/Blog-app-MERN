@@ -4,5 +4,9 @@
       "source": "/api/:path*",
       "destination": "https://zenquest-api.vercel.app/api/:path*"
     }
+  ],
+  "routes": [
+    { "src": "/", "dest": "/" },
+    { "src": "/admin/sign-in", "dest": "/admin/sign-in" }
   ]
 }
