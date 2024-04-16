@@ -7,8 +7,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        // target: 'https://zenquest-api.vercel.app',
-        target: ' http://localhost:5000',
+        target: 'https://zenquest-api.vercel.app',
+        // target: ' http://localhost:5000',
         changeOrigin: true,
         // rewrite: (path) => path.replace(/^\/api/, ''),
       },
