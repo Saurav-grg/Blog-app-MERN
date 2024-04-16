@@ -3,7 +3,7 @@ import { FaGoogle } from 'react-icons/fa';
 
 export default function Signin() {
   const google = () => {
-    window.open('http://localhost:5000/api/auth/google/callback', '_self');
+    window.open('api/auth/google/callback', '_self');
   };
   return (
     <div className="flex flex-col shadow-xl rounded-xl w-2/4 mx-auto min-h-[300px] my-8">
