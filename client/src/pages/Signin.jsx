@@ -4,7 +4,9 @@ import { FaGoogle } from 'react-icons/fa';
 export default function Signin() {
   const google = () => {
     // window.open('/api/auth/google/callback', '_self');
-    window.location.href('/api/auth/google/callback');
+    window.location.href(
+      'https://zenquest-api.vercel.app/api/auth/google/callback'
+    );
   };
   return (
     <div className="flex flex-col shadow-xl rounded-xl w-2/4 mx-auto min-h-[300px] my-8">
