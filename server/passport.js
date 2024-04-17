@@ -18,23 +18,16 @@ passport.use(
       try {
         // Find the user in the database based on the Google profile ID
         let user = await User.findOne({ googleId: profile.id });
-        if (!user) {
-          return cb(new Error('User not found'));
+        const userCount = await User.countDocuments({});
+        if (userCount <= 5 && !user) {
+          user = await User.create({
+            googleId: profile.id,
+            displayName: profile.displayName,
+            email: profile.emails[0].value,
+            photos: profile.photos,
+            role: 'admin',
+          });
         }
-        // If the user is not found, create a new user
-        // if (!user) {
-        //   user = await User.create({
-        //     googleId: profile.id,
-        //     displayName: profile.displayName,
-        //     email: profile.emails[0].value,
-        //     photos: profile.photos,
-        //     role: 'developer', // Set the role to 'developer' for new users
-        //     // permissions: ['accessProtectedRoutes'],
-        //     // Add any other fields from the Google profile as needed
-        //   });
-        // }
-
-        // Pass the user object to the done callback
         return cb(null, user);
       } catch (err) {
         return cb(err);
