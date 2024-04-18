@@ -38,8 +38,10 @@ app.use(
     secret: process.env.SESSION_SECRET, // Replace with a secure secret key
     resave: false,
     saveUninitialized: true,
+    name: 'zenxenquest',
     cookie: {
       maxAge: 24 * 60 * 60 * 1000 * 2, // 2 days
+      sameSite: 'none',
     },
     store: MongoStore.create({ mongoUrl }),
   })
