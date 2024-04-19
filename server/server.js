@@ -13,6 +13,7 @@ const app = express();
 require('dotenv').config();
 
 // app.set('trust proxy', true);
+app.enable('trust proxy');
 
 // // Use the express-http-proxy middleware
 // app.use(proxy());
@@ -42,7 +43,7 @@ app.use(
     proxy: true,
     cookie: {
       secure: true, // required for cookies to work on HTTPS
-      httpOnly: false,
+      httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000 * 2, // 2 days
       sameSite: 'none',
     },
