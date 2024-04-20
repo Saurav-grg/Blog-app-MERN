@@ -1,4 +1,4 @@
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
 import ProfileBox from './ProfileBox';
@@ -88,7 +88,7 @@ function Navbar() {
                       'my-1 text-blue-900 font-bold md:mx-4 md:my-0' +
                       (!isActive
                         ? 'bg-white '
-                        : 'bg-black underline underline-offset-8')
+                        : 'bg-black underline underline-offset-8 ')
                     );
                   }}
                   to={page.path}

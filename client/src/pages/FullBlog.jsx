@@ -68,7 +68,7 @@ export default function FullBlog() {
           <meta name="keywords" content={blog.meta.keywords.join(', ')} />
         </Helmet>
         <div className="flex flex-col smd:flex-row items-center gap-5 smd:items-start">
-          <div className="flex flex-col xsm:w-3/4 w-[95%] ">
+          <div className="flex flex-col xsm:w-3/4 w-[95%] smd:pl-8 pt-8">
             <div className=" ">
               <div className="xsm:text-3xl text-xl max-w-[850px] font-bold text-blue-900 font-sans">
                 {blog.title}

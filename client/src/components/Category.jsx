@@ -21,7 +21,7 @@ const Category = () => {
                 <Link to={`/${blog.category}/${blog.slug}`} key={index}>
                   <div className="flex items-center justify-center rounded-md hover:scale-110 duration-300">
                     <div className="max-w-[230px]">
-                      <div className=" w-full ">
+                      <div className=" w-full h-[280px] shadow-sm">
                         <img
                           className="w-full object-cover h-full rounded-md"
                           alt="image"

@@ -8,7 +8,7 @@ export default function Footer() {
           <div class="mb-6 md:mb-0">
             <a href="#" class="flex items-center">
               <img
-                src="/Zenquest.png"
+                src="/logo.png"
                 class="h-8 me-3 rounded-full"
                 alt="FlowBite Logo"
               />
