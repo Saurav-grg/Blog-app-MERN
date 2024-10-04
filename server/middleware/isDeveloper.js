@@ -1,19 +1,15 @@
-const isDeveloper = (req, res, next) => {
-  // Check if the user is authenticated
-  if (!req.isAuthenticated()) {
-    return res.status(401).json({ error: 'Unauthorized for this request' });
-  } // Call the next middleware or route handler
-
-  const user = req.user;
-  // console.log(user);
-  // Check if the user is a developer
-
-  if (user.role === 'developer') {
-    // User is a developer, proceed to the next middleware/route handler
+const User = require('../models/userModel');
+const isDeveloper = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ _id: req.userId, role: 'admin' });
+    if (!user) {
+      return res.status(403).json({
+        message: 'Forbidden: User is not the admin',
+      });
+    }
     next();
-  } else {
-    // User is not a developer
-    res.status(403).json({ error: 'not a admin' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
   }
 };
 module.exports = { isDeveloper };

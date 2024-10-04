@@ -16,7 +16,7 @@ const PrivateRoute = () => {
     return <div>Loading...</div>; // Or your loading component
   }
 
-  if (user && user.role === 'developer') {
+  if (user && user.role === 'admin') {
     return <Outlet />;
   } else {
     return <Navigate to="/admin/sign-in" />;

@@ -22,9 +22,9 @@ const createBlog = async (req, res) => {
       meta: metaData,
       ...rest,
     });
-    res.status(200).json(newBlog);
+    res.status(200).json({ success: true, newBlog });
   } catch (error) {
-    res.status(500).send({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
 

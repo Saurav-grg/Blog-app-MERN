@@ -1,11 +1,24 @@
 import React from 'react';
+import axios from 'axios';
 import { FaGoogle } from 'react-icons/fa';
-
+import { GoogleAuthProvider, signInWithPopup, getAuth } from 'firebase/auth';
+import { app } from '../firebase';
+import { useAuthContext } from '../hooks/useAuthContext';
 export default function Signin() {
-  const google = () => {
-    // window.open('/api/auth/google/callback', '_self');
-    window.location.href =
-      'https://zenquest-api.vercel.app/api/auth/google/callback';
+  const provider = new GoogleAuthProvider();
+  const auth = getAuth(app);
+  const { dispatch } = useAuthContext();
+  const google = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const idToken = await result.user.getIdToken();
+      const res = await axios.post(`/api/auth/google`, {
+        idToken: idToken,
+      });
+      dispatch({ type: 'LOGIN', payload: res.data.user });
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <div className="flex flex-col shadow-xl rounded-xl w-2/4 mx-auto min-h-[300px] my-8">

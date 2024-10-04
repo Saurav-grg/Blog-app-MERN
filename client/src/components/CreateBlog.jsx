@@ -7,7 +7,7 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import useCreatePost from '../hooks/useCreatePost';
 import useUpdatePost from '../hooks/useUpdatePost';
 import { useLocation } from 'react-router-dom';
-import { app } from '../other/firebase';
+import { app } from '../firebase';
 import {
   getDownloadURL,
   getStorage,

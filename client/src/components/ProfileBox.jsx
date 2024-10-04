@@ -25,7 +25,7 @@ export default function ProfileBox() {
         >
           <img
             className="w-10 h-10 outline outline-primary  rounded-full"
-            src={user.photos}
+            src={user.profilePicture}
             alt="profile"
           />
           {/* <ChevronDownIcon
@@ -51,7 +51,7 @@ export default function ProfileBox() {
                 <div className="flex items-center justify-around p-2">
                   <img
                     className="w-10 h-10 rounded-full"
-                    src={user.photos}
+                    src={user.profilePicture}
                     alt="profile"
                   />
                   <div>
