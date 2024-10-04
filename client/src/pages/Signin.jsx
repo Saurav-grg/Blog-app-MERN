@@ -4,9 +4,11 @@ import { FaGoogle } from 'react-icons/fa';
 import { GoogleAuthProvider, signInWithPopup, getAuth } from 'firebase/auth';
 import { app } from '../firebase';
 import { useAuthContext } from '../hooks/useAuthContext';
+import { useNavigate } from 'react-router-dom';
 export default function Signin() {
   const provider = new GoogleAuthProvider();
   const auth = getAuth(app);
+  const navigate = useNavigate();
   const { dispatch } = useAuthContext();
   const google = async () => {
     try {
@@ -16,6 +18,7 @@ export default function Signin() {
         idToken: idToken,
       });
       dispatch({ type: 'LOGIN', payload: res.data.user });
+      navigate('/');
     } catch (error) {
       console.error(error);
     }

@@ -6,11 +6,7 @@ const google = async (req, res) => {
     // Verify the ID token
     const { idToken } = req.body;
     const decodedToken = await admin.auth().verifyIdToken(idToken);
-
-    // The token is valid. The user's UID and email can be trusted.
     const { uid, email, name, picture } = decodedToken;
-
-    // Look for an existing user
     let user = await User.findOne({ email: email });
 
     if (user) {
@@ -65,4 +61,8 @@ const checkAuth = async (req, res) => {
     res.status(400).json({ success: false, message: error.message });
   }
 };
-module.exports = { google, checkAuth };
+const logout = async (req, res) => {
+  res.clearCookie('token');
+  res.status(200).json({ success: true, message: 'Logged out successfully' });
+};
+module.exports = { google, checkAuth, logout };

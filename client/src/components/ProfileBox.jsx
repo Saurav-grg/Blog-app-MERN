@@ -6,15 +6,21 @@ import { useAuthContext } from '../hooks/useAuthContext';
 import { IoCreateSharp } from 'react-icons/io5';
 import { RiDashboardFill } from 'react-icons/ri';
 import { MdLogout } from 'react-icons/md';
+import axios from 'axios';
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
 export default function ProfileBox() {
-  const { user } = useAuthContext();
-  const logout = () => {
-    localStorage.clear();
-    window.open('/api/auth/logout', '_self');
+  const { user, dispatch } = useAuthContext();
+  const logout = async () => {
+    try {
+      await axios.post('/api/auth/logout');
+      dispatch({ type: 'LOGOUT' });
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <Menu as="div" className="relative inline-block text-left">
