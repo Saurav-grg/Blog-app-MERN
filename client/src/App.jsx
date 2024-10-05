@@ -21,15 +21,11 @@ function App() {
 
   useEffect(() => {
     const getUser = async () => {
-      try {
-        const response = await axios.get('/api/auth/check-auth', {
-          withCredentials: true,
-        });
-        authDispatch({ type: 'LOGIN', payload: response.data.user });
-        // console.log(response.data.user);
-      } catch (error) {
-        console.log(error);
-      }
+      const response = await axios.get('/api/auth/check-auth', {
+        withCredentials: true,
+      });
+      authDispatch({ type: 'LOGIN', payload: response.data.user });
+      // console.log(response.data.user);
     };
     getUser();
   }, [authDispatch]);
